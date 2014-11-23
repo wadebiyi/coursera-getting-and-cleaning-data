@@ -10,7 +10,7 @@ class:  Numeric
 
 ####variable:	activity 	 : 	  
 Description:	 activity 	 : 	  
-class:	 factor
+class:	 factor           :
 levels: walking, walkingUpstairs, walkingDownstairs, sitting, standing, laying             
 
 |                        |Frequency |Percent
