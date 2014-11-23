@@ -3,7 +3,8 @@ Codebook
  
  
 ####subject.id 	 : 	  
-Description: Subject identification.  </ br>
+
+Description: Subject identification	 : 	  
 class:  Numeric.
 
   obs. |min.  | max. 
@@ -11,9 +12,10 @@ class:  Numeric.
   180 | 1  |    30    
 
 
-####variable:	activity 	 : 	  
-Description:	 activity 	 :
-class:	 factor           :
+####variable:	activity	 : 	  
+Description:	 activity	 : 	  
+class:	 factor    	 : 	  
+
 levels: walking, walkingUpstairs, walkingDownstairs, sitting, standing, laying             
 
 |                        |Frequency |Percent
@@ -619,7 +621,3 @@ class:	 numeric
 ----|-----|-----|----|------|-------
 180  |-0.772 |-0.894  |0.25   |-0.998 |0.288 
 
-
-####variable:	
-Description:	 Mean of 
-class:	 numeric
