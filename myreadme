@@ -1,0 +1,30 @@
+## Read the train data -- train/X_train.txt
+## Read the test data -- test/X_test.txt
+## Combine the train data and the test data into one 10299x561 data.frame 
+## reads the subjects for the train data
+## reads the subjects for the test data
+## combine the subjects  -- training and subjects -- into a single
+## 10299x1 dataframe 
+## reads the activity labels for the training data
+## reads the activity labels for the test data
+## combines the activity labels into a 10299x1 dataframe
+## names the activity labels and the subject labels with a descriptive variable
+## name
+## Get the descriptive activity label names from the activity_labels.txt
+## changes the label names to camelCase format
+##Read the features file and store it in a 561x2 dataframe
+## get the index of the variable labels that contains either "mean()" or "std()"
+## from the feature to get the variables that contain measurements of the mean
+## and standard deviation resulting in a numeric vector with 66 members.
+##subset the full data by the index to get a 10299x66 dataframe
+## Select the required labels from the features data.frame by
+## subsetting the features dataframe by index
+## Cleans up the column names of the subset by removing the "()" and making the 
+##  first letter of "mean" and "std" a capital letter "M" and "S" respectively.
+##apply the headings as the variable names for the data
+## 
+## Combine the subset of fulldata "data.full.subset" with the 
+##subject label "subject.full" and activity labels "labels.full"
+## Apply the activity labels to the activity column
+## generate a second, independent tidy data set with the average of each 
+## variable for each activity and each subject.

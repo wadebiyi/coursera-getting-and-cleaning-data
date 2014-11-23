@@ -1,4 +1,6 @@
 setwd("/home/users/Manjaro/wadebiyi/Dropbox/MyData/r-programming/getdata/project/UCI HAR Dataset/")
+
+setwd("UCI HAR Dataset/")
 library(data.table)
 library(dplyr)
 
@@ -11,34 +13,62 @@ data.test <- read.table("test/X_test.txt")
 ## Combine the train data and the test data into one 10299x561 data.frame 
 data.full <- rbind(data.train, data.test)
 
+
+## reads the subjects for the train data
 subjects.train <- read.table("train//subject_train.txt")
+
+## reads the subjects for the test data
 subjects.test <- read.table("test//subject_test.txt")
 
+## combine the subjects  -- training and subjects -- into a single
+## 10299x1 dataframe 
 subjects.full <- rbind(subjects.train, subjects.test)
 
 
-
+## reads the activity labels for the training data
 labels.train <- read.table("train/y_train.txt")
+
+## reads the activity labels for the test data
 labels.test <- read.table("test/y_test.txt")
 
+
+## combines the activity labels into a 10299x1 dataframe
 labels.full <- rbind(labels.train, labels.test)
 
-names(labels.full) <- "activity.labels"
+## names the activity labels and the subject labels with a descriptive variable
+## name
+names(labels.full) <- "activity"
 names(subjects.full) <- "subject.id"
 
-##Read the features file and and store the 2nd column as headings
+
+## Get the descriptive activity label names from the activity_labels.txt
+## changes the label names to camelCase format
+activity.labels <- read.table("activity_labels.txt")
+activity.labels <- as.data.frame(sapply(activity.labels, tolower))
+activity.labels <- as.data.frame(
+  sapply(activity.labels, gsub, pattern= "_(\\w)", replacement="\\U\\1", perl=T))
+activity.labels <- as.character(unlist(activity.labels[2]))
+
+
+
+##Read the features file and store it in a 561x2 dataframe
 features <-read.table("features.txt")
 
+## get the index of the variable labels that contains either "mean()" or "std()"
+## from the feature to get the variables that contain measurements of the mean
+## and standard deviation resulting in a numeric vector with 66 members.
 index <- grep("mean\\(\\)|std\\(\\)", features$V2)
 
-##subset the full data by index
+##subset the full data by the index to get a 10299x66 dataframe
 data.full.subset <- data.full[,index]
 
-## Select the required labels from the features data.frame
-## subset the features by index
+## Select the required labels from the features data.frame by
+## subsetting the features dataframe by index
 features.subset <- features[index,]
 
-## Cleans up the column names of the subset
+## Cleans up the column names of the subset by removing the "()" and making the 
+##  first letter of "mean" and "std" a capital letter "M" and "S" respectively.
+
 f <- as.data.frame(sapply(features.subset, gsub, pattern="\\(\\)", replacement="",perl=T))
 f <- as.data.frame(sapply(f, gsub,pattern="-mean", replacement="Mean",perl=T))
 f <- as.data.frame(sapply(f, gsub, pattern="-std", replacement = "Std"))
@@ -54,39 +84,13 @@ names(data.full.subset) <- headings
 ##subject label "subject.full" and activity labels "labels.full"
 fulldata <- tbl_dt(cbind(subjects.full, labels.full, data.full.subset))
 
-
-## Read the train/subjects_train.txt and the training labels train/y_train.txt and
-## apply the "activity.labels" as the variable name for the training labels and "subject.id"
-## as variable name for the subjects
-
-labels.train <- read.table("train/y_train.txt")
-names(labels.train) <- "activity.labels"
-names(subjects.train) <- "subject.id"
-
-## Combine the training data, subjects.id and training labels as train.data
-train.data <- tbl_dt(cbind(subjects.train, labels.train[1], a))
-setkey(train.data, subject.id)
+## Apply the activity labels to the activity column
+fulldata$activity <- factor(fulldata$activity, labels = activity.labels)
 
 
 
-names(b) <- headings
+## generate a second, independent tidy data set with the average of each 
+## variable for each activity and each subject.
+tidy.data <- fulldata[, lapply(.SD, mean, na.rm=T), by=list(subject.id, activity)]
 
-names(subjects.test) <- "subject.id"
-labels.test <- read.table("test/y_test.txt")
-names(labels.test) <- "activity.labels"
-test.data <- tbl_dt(cbind(subjects.test, labels.test[1], b))
-setkey(test.data, subject.id)
-
-fulldata <- tbl_dt(rbind(test.data, train.data))
-# fulldt <- tbl_dt(fulldata)
-fulldata.part <-   fulldata%>%
-  mutate(activity = factor(activity.labels, 
-                           labels=as.character(unlist(labels[2]))))%>%
-  select(subject.id, activity, 
-         contains("mean()"), 
-         contains("std()"))
-
-fulldata.part%>%
-  group_by(subject.id, activity) %>%
-  print
-tidy.data <- fulldata.part[, lapply(.SD, mean, na.rm=T), by=list(subject.id, activity)]
+write.table(tidy.data, file = "tidy_data.txt", row.names  = FALSE )
