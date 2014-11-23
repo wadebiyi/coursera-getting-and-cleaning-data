@@ -10,11 +10,16 @@ subject.id 	 :
  ================== 
 activity 	 : 	  
                   Frequency Percent
-walking                  30    16.7
+walking                  30    16.7 
+
 walkingUpstairs          30    16.7
+
 walkingDownstairs        30    16.7
+
 sitting                  30    16.7
+
 standing                 30    16.7
+
 laying                   30    16.7
 
  ================== 
