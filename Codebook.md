@@ -3,10 +3,12 @@ Codebook
  
  
 ####subject.id 	 : 	  
-Description: Subject identification
-class:  Numeric
-  obs. min.   max.  
-  180  1      30    
+Description: Subject identification.  </ br>
+class:  Numeric.
+
+  obs. |min.  | max. 
+  ---|---|---
+  180 | 1  |    30    
 
 
 ####variable:	activity 	 : 	  
