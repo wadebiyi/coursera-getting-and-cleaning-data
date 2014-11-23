@@ -1,4 +1,4 @@
-setwd("/home/users/Manjaro/wadebiyi/Dropbox/MyData/r-programming/getdata/project/UCI HAR Dataset/")
+#setwd("/home/users/Manjaro/wadebiyi/Dropbox/MyData/r-programming/getdata/project/UCI HAR Dataset/")
 
 setwd("UCI HAR Dataset/")
 library(data.table)
@@ -70,8 +70,9 @@ features.subset <- features[index,]
 ##  first letter of "mean" and "std" a capital letter "M" and "S" respectively.
 
 f <- as.data.frame(sapply(features.subset, gsub, pattern="\\(\\)", replacement="",perl=T))
-f <- as.data.frame(sapply(f, gsub,pattern="-mean", replacement="Mean",perl=T))
-f <- as.data.frame(sapply(f, gsub, pattern="-std", replacement = "Std"))
+f <- as.data.frame(sapply(f, gsub,pattern="mean", replacement="Mean",perl=T))
+f <- as.data.frame(sapply(f, gsub, pattern="std", replacement = "Std"))
+f <- as.data.frame(sapply(f, gsub, pattern="-", replacement = "."))
 headings <- as.vector(unlist(f[2]))
 
 ##apply the headings as the variable names for the data
